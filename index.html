@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calcularor</title>
+    <style>
+        body{
+            background-color: rgb(137, 206, 137);
+            place-items: center;
+            height: 100vh;
+            display: grid;
+        }
+        h1{
+           text-align: center; 
+           font: 2em sans-serif; 
+           font-style: italic;
+           font-weight: bold;
+        }
+        .container{
+            width: 100%;
+            max-width: 420px;
+            background-color: antiquewhite;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 10px 5px 5px 10px solid black;
+            display: grid;
+            gap: 1rem;
+            bottom: 50%;
+        }
+        .calculator{
+            display: grid;
+            gap: 1rem;
+        }
+        .calculator div{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .calculator label{
+            flex: 0 1 120px;
+            font-weight: 600;
+        }
+        .calculator input{
+           flex: 1;
+           border: 3px solid rgb(238, 230, 230);
+           border-radius: 10%;
+           padding: 5px;
+           outline-color: rgb(85, 79, 79);
+           font-size: 1.25rem;
+           text-align: center;
+        }
+        .calculator button{
+            width: 50%;
+            border-radius: 5%;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            background-color: green;
+            color: aliceblue;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .calculator button[type="reset"] {
+            background-color: #444;
+        }
+        .calculator button:hover{
+            filter: brightness(120%);
+        }
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font: 1rem sans-serif;
+            font-weight: bold;
+        }
+        .output{
+            text-align: center;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font: 1rem sans-serif;
+            
+        }
+        .output #bmi {
+            font-size: 4rem;
+
+        }
+        .output #desc {
+            text-transform: uppercase;
+        }
+        .bmi-scale{
+            display: flex;
+        }
+        .bmi-scale div{
+            flex:1;
+            text-align: center;
+            text-transform: uppercase;
+            padding: 10px;
+            font-size: small;
+           }
+        .underweight{
+            border-top: 5px solid rgb(24, 9, 236);
+        }
+        .normal{
+            border-top: 5px solid green;
+        }
+        .overweight{
+            border-top: 5px solid yellow;
+        }
+        .obesity{
+            border-top: 5px solid rgb(238, 7, 7);
+        }
+    </style>
+
+    
+</head>
+<body>
+    <div class="container">
+        <h1>BMI CALCULATOR</h1>
+
+        <form class="calculator">
+            <div>
+                <label for="weight">Weight (kg)</label> 
+                <input type="number" id="weight" min="0" step="0.01" value="0"/>
+            </div>
+
+            <div>
+                <label for="height">Height (cm)</label> 
+                <input type="number" id="height" min="0" step="0.01" value="0"/>
+            </div>
+
+            <div>
+                <button type="reset">Reset</button>
+                <button type="submit" onclick="onFormSubmit(e)">Submit</button>
+            </div>
+        </form>
+        <section class="output">
+            <h3>Your BMI is</h3>
+            <p id="bmi">0</p>
+            <p id="desc">nil</p>
+        </section>
+        <section class="bmi-scale">
+            <div class="underweight">
+                <h4>Under weight</h4>
+                <p>&lt; 18.5</p>
+            </div>
+            <div class="normal">
+                <h4>Normal</h4>
+                <p>18.5 - 25</p>
+            </div>
+            <div class="overweight">
+                <h4>Over weight</h4>
+                <p>25 - 30</p>
+            </div>
+            <div class="obesity">
+                <h4>Obesity</h4>
+                <p>&ge; 30</p>
+            </div>
+        </section>
+        <script>
+            const bmiText = document.getElementById('bmi');
+            const descText = document.getElementById('desc');
+            const form = document.querySelector('form');
+      
+            form.addEventListener('submit', onFormSubmit)
+      
+            function onFormSubmit(e) {
+              e.preventDefault();
+      
+          const weight = parseFloat(form.weight.value);
+          const height = parseFloat(form.height.value);
+      
+          if(isNaN(weight) || isNaN(height) || weight <=0 || height <= 0)
+          {
+              alert("please enter a valid height & weight")
+              return;
+          }
+      
+          const heightInMetres = height / 100;
+          const bmi = weight /Math.pow(heightInMetres, 2);
+          //const desc = interpretBMI(bmi)
+      
+          bmiText.textContent = bmi.toFixed(2);
+          //descText.innerHTML = "You are" + "('.desc')";
+        
+
+        function interpretBMI(bmi) {
+            if (bmi < 18.5){
+                return 'underweight';
+            }else if (bmi < 25){
+                return 'healthy';
+            }else if (bmi <= 30){
+                return 'overweight';
+            }else if (bmi > 30){
+                return 'obesity';
+            }
+        }
+
+        if (bmi < 18.5){
+        document.querySelector(".output #desc").innerHTML ="<h2 style=color:blue; font-weight:bold;>you are under weight</h2>";
+        }
+        else if (bmi <= 25){
+        document.querySelector(".output #desc").innerHTML ="<h2 style=color:green; font-weight:bold;>you are healthy</h2>";
+        }
+        else if (bmi <= 30){
+        document.querySelector(".output #desc").innerHTML ="<h2 style=color:yellow; font-weight:bold;>you are overweight</h2>";
+        }
+        else if (bmi > 30){
+        document.querySelector(".output #desc").innerHTML ="<h2 style=color:red; font-weight:bold;>you are obesee</h2>";
+        }
+      
+        }
+           
+          </script>
+    </div>
+</body>
+</html>
